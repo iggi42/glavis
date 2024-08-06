@@ -1,6 +1,6 @@
 # Glavis
 
-**TODO: Add description**
+[draft-gallagher-openpgp-hkp-05](https://datatracker.ietf.org/doc/html/draft-gallagher-openpgp-hkp#name-the-op-operation-field)
 
 ## Installation
 
