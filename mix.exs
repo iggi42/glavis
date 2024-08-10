@@ -13,13 +13,17 @@ defmodule Glavis.MixProject do
 
   def application do
     [
-      extra_applications: [:logger]
+      extra_applications: [:logger],
+      mod: {Glavis.Application, []}
     ]
   end
 
   defp deps do
     [
-      {:plug, "~> 1.16"}
+      {:plug, "~> 1.16"},
+
+      # for fa&fo (fucking around and finding out)
+      {:plug_cowboy, "~> 2.0"}
     ]
   end
 end
