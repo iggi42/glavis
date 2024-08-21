@@ -23,7 +23,9 @@ defmodule Glavis.MixProject do
       {:plug, "~> 1.16"},
 
       # for fa&fo (fucking around and finding out)
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+
+      {:open_pgp, "~> 0.5.1"}
     ]
   end
 end

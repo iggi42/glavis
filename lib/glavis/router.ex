@@ -28,13 +28,17 @@ defmodule Glavis.Router do
   end
 
   post "/pks/add" do
-    with keytext <- conn.params["keytext"] do
-      keytext
-      |> Glavis.Key.parse_keytext()
-      |> Enum.each(&Glavis.Keystore.insert/1)
-    end
+    with keytext <- conn.params["keytext"],
+      [%OpenPGP.Radix64.Entry{name: "PGP PUBLIC KEY BLOCK", data: data}] <- OpenPGP.Radix64.decode(keytext) do
 
-    send_resp(conn, 200, "submitting keys is WIP\n")
+      r = data
+      |> OpenPGP.list_packets()
+      |> OpenPGP.cast_packets()
+
+      send_resp(conn, 200, "submitting keys is WIP\n")
+    else
+      _ ->  send_resp(conn, 500, "something went wring :S\n")
+    end
   end
 
   match _ do
