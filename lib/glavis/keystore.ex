@@ -10,7 +10,10 @@ defmodule Glavis.Keystore do
   `MyImplModule` needs to implement `Glavis.Keystore.Behaviour` for that.
   """
 
-  defdelegate insert(key),
+  defdelegate insert(armored_key),
+    to: Application.compile_env(:glavis, [Glavis.Keystore, :impl], Glavis.Keystore.Dummy)
+
+  defdelegate get(key_id),
     to: Application.compile_env(:glavis, [Glavis.Keystore, :impl], Glavis.Keystore.Dummy)
 
 end

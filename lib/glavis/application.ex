@@ -8,7 +8,8 @@ defmodule Glavis.Application do
   def start(_type, _args) do
     # List all child processes to be supervised
     children = [
-      {Plug.Cowboy, scheme: :http, plug: Glavis.Router, options: [port: 11371]}
+      {Plug.Cowboy, scheme: :http, plug: Glavis.Router, options: [port: 11371]},
+      {Glavis.Keystore.Dummy.Server, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
