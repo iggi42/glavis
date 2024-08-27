@@ -15,8 +15,9 @@ defmodule Glavis.Router do
   plug(:dispatch)
 
   # v1 route
-  get "/pks/lookup/v1/get/:search" do
-    send_resp(conn, 501, "get is in WIP")
+  get "/pks/lookup/v1/:op/:search" do
+    opts = conn.params["options"] || []
+    lookup(conn, op, search, opts)
   end
 
   # legacy route

@@ -1,4 +1,4 @@
-defmodule Glavis.Keystore.Dummy do
+defmodule Glavis.Keystore.Small do
   @behaviour Glavis.Keystore.Behaviour
 
   @impl true
@@ -9,17 +9,13 @@ defmodule Glavis.Keystore.Dummy do
         fingerprint: extract_fingerprint(keyring)
       }
 
-      GenServer.call(Dummy, {:insert, new_el})
+      GenServer.call(Small, {:insert, new_el})
     end
-    if Enum.all?(results, &(&1 == :ok)) do
-      :ok
-    else
-      :error
-    end
+    if Enum.all?(results, &(&1 == :ok)), do: :ok, else: :error
   end
 
   @impl true
-  def get(long_key_id), do: GenServer.call(Dummy, {:get, long_key_id})
+  def get(long_key_id), do: GenServer.call(Small, {:get, long_key_id})
 
   defp extract_fingerprint(keyring) do
     keyring
@@ -36,7 +32,7 @@ defmodule Glavis.Keystore.Dummy do
   defmodule Server do
     use GenServer
 
-    def start_link(init_arg, opts \\ [name: Dummy]), do: GenServer.start_link(__MODULE__, init_arg, opts)
+    def start_link(init_arg, opts \\ [name: Small]), do: GenServer.start_link(__MODULE__, init_arg, opts)
 
     @impl true
     def init(_), do: {:ok, []}

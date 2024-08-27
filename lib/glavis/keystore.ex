@@ -11,9 +11,9 @@ defmodule Glavis.Keystore do
   """
 
   defdelegate insert(armored_key),
-    to: Application.compile_env(:glavis, [Glavis.Keystore, :impl], Glavis.Keystore.Dummy)
+    to: Application.compile_env(:glavis, [Glavis.Keystore, :impl], Glavis.Keystore.Small)
 
   defdelegate get(key_id),
-    to: Application.compile_env(:glavis, [Glavis.Keystore, :impl], Glavis.Keystore.Dummy)
+    to: Application.compile_env(:glavis, [Glavis.Keystore, :impl], Glavis.Keystore.Small)
 
 end
