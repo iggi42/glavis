@@ -5,4 +5,6 @@ defmodule Glavis.Keystore.Behaviour do
   @callback insert(binary()) :: :ok | :error
 
   @callback get(binary()) :: binary() | nil
+
+  @callback list() :: list(binary())
 end

@@ -29,6 +29,10 @@ defmodule Glavis.Router do
     end
   end
 
+  get "/pks/list" do
+    send_resp(conn, 200, Keystore.list())
+  end
+
   post "/pks/add" do
     with keytext <- conn.params["keytext"],
       :ok <- Glavis.Keystore.insert(keytext) do

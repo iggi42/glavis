@@ -16,4 +16,6 @@ defmodule Glavis.Keystore do
   defdelegate get(key_id),
     to: Application.compile_env(:glavis, [Glavis.Keystore, :impl], Glavis.Keystore.Small)
 
+  defdelegate list(),
+    to: Application.compile_env(:glavis, [Glavis.Keystore, :impl], Glavis.Keystore.Small)
 end
