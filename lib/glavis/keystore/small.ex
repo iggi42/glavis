@@ -1,3 +1,6 @@
+# this is a primitive keystore mostly used for development.
+# It stores 
+
 defmodule Glavis.Keystore.Small do
   @behaviour Glavis.Keystore.Behaviour
 
@@ -58,7 +61,7 @@ defmodule Glavis.Keystore.Small do
     def handle_continue(:load, state) do
       unless state == [], do: Logger.warn("loading from files from non-empty state")
 
-      {:ok, keytext} = File.read(keyfile())
+      keytext = File.read!(keyfile())
 
       new_state = for keyring <- S.parse_keyrings(keytext) do
         %{
