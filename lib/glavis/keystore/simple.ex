@@ -6,6 +6,8 @@ defmodule Glavis.Keystore.Simple do
 
   require Logger
 
+  @target_server __MODULE__.Server
+
   @impl true
   def insert(keytext) do
     results =
@@ -15,18 +17,18 @@ defmodule Glavis.Keystore.Simple do
           fingerprint: extract_fingerprint(keyring)
         }
 
-        GenServer.call(Simple, {:insert, new_el})
+        GenServer.call(@target_server, {:insert, new_el})
       end
 
     if Enum.all?(results, &(&1 == :ok)), do: :ok, else: :error
   end
 
   @impl true
-  def get(long_key_id), do: GenServer.call(Simple, {:get, long_key_id})
+  def get(long_key_id), do: GenServer.call(@target_server, {:get, long_key_id})
 
   @impl true
   def list() do
-    GenServer.call(Simple, :list) |> Enum.map(&("0x" <> Base.encode16(&1) <> "\n"))
+    GenServer.call(@target_server, :list) |> Enum.map(&("0x" <> Base.encode16(&1) <> "\n"))
   end
 
   def extract_fingerprint(keyring) do
@@ -51,7 +53,7 @@ defmodule Glavis.Keystore.Simple do
     # in secounds 
     @save_interval 60
 
-    def start_link(init_arg, opts \\ [name: Simple]),
+    def start_link(init_arg, opts \\ [name: __MODULE__]),
       do: GenServer.start_link(__MODULE__, init_arg, opts)
 
     @impl true
@@ -86,8 +88,16 @@ defmodule Glavis.Keystore.Simple do
       end
     end
 
+    defp state2str(state) do
+      state
+      |> Enum.map(& &1.fingerprint)
+      |> Enum.map(&("0x" <> Base.encode16(&1)))
+      |> inspect(pretty: true)
+    end
+
     @impl true
     def handle_cast(:save, state) do
+      Logger.info("saving state: #{state2str(state)}")
       save_state(state)
       start_reminder()
       {:noreply, state}

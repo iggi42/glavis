@@ -35,7 +35,7 @@ defmodule Glavis.Router do
 
   post "/pks/add" do
     with keytext <- conn.params["keytext"],
-         :ok <- Glavis.Keystore.insert(keytext) do
+         :ok <- Keystore.insert(keytext) do
       send_resp(conn, 200, "submitted key")
     else
       _ -> send_resp(conn, 500, "something went wrong :S")
@@ -48,7 +48,7 @@ defmodule Glavis.Router do
 
   defp lookup(conn, op, search, opts \\ [])
 
-  defp lookup(conn, "get", "0x" <> keyid, _opts) do
+  defp lookup(conn, op, "0x" <> keyid, _opts) when op == "get" or op == "kidget"  do
     with {:ok, id} <- Base.decode16(keyid),
          keytext when is_binary(keytext) <- Keystore.get(id) do
       send_resp(conn, 200, keytext)
